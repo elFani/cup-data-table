@@ -1,0 +1,33 @@
+<h2>roster comp</h2>
+
+<div>
+  <table cdk-table [dataSource]="displayRoster" class="table table-hover">
+    <ng-container cdkColumnDef="name">
+      <th cdk-header-cell *cdkHeaderCellDef sortable="fields.Name" (sort)="onSort($event)">
+        name</th>
+      <td cdk-cell *cdkCellDef="let row">{{ row.fields.Name }}</td>
+    </ng-container>
+    <ng-container cdkColumnDef="position">
+      <th cdk-header-cell *cdkHeaderCellDef>position</th>
+      <td cdk-cell *cdkCellDef="let row">{{ row.fields.Position }}</td>
+    </ng-container>
+    <ng-container cdkColumnDef="paid">
+      <th cdk-header-cell *cdkHeaderCellDef>paid jersey fee</th>
+      <td cdk-cell *cdkCellDef="let row">{{ row.fields.JerseyFeePaid }}</td>
+    </ng-container>
+    <ng-container cdkColumnDef="email">
+      <th cdk-header-cell *cdkHeaderCellDef>email</th>
+      <td cdk-cell *cdkCellDef="let row">{{ row.fields.EmailAddress }}</td>
+    </ng-container>
+    <ng-container cdkColumnDef="address">
+      <th cdk-header-cell *cdkHeaderCellDef>address</th>
+      <td cdk-cell *cdkCellDef="let row">{{ row.fields.HomeAddress }}</td>
+    </ng-container>
+    <ng-container cdkColumnDef="notes">
+      <th cdk-header-cell *cdkHeaderCellDef>notes</th>
+      <td cdk-cell *cdkCellDef="let row">{{ row.fields.Notes }}</td>
+    </ng-container>
+    <tr cdk-header-row *cdkHeaderRowDef="rosterColumns"></tr>
+    <tr cdk-row *cdkRowDef="let row; columns: rosterColumns;"></tr>
+  </table>
+</div>
