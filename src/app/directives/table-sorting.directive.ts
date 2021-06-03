@@ -1,17 +1,12 @@
 import { Directive, EventEmitter, Input, Output } from '@angular/core';
-import { Player } from '../models/player.model';
 
-export type SortColumn = keyof Player | '';
 export type SortDirection = 'asc' | 'desc' | '';
-const rotate: { [key: string]: SortDirection } = {
-  asc: 'desc',
-  desc: '',
-  '': 'asc'
-};
+const rotate: { [key: string]: SortDirection } = { 'asc': 'desc', 'desc': '', '': 'asc' };
 
 export interface SortEvent {
-  column: SortColumn;
+  column: string;
   direction: SortDirection;
+  table?: string;
 }
 
 @Directive({
@@ -22,13 +17,16 @@ export interface SortEvent {
     '(click)': 'rotate()'
   }
 })
+
 export class SortableHeader {
-  @Input() sortable: SortColumn = '';
+
+  @Input() sortable: string;
   @Input() direction: SortDirection = '';
+  @Input() table: string;
   @Output() sort = new EventEmitter<SortEvent>();
 
   rotate() {
     this.direction = rotate[this.direction];
-    this.sort.emit({ column: this.sortable, direction: this.direction });
+    this.sort.emit({ column: this.sortable, direction: this.direction, table: this.table });
   }
 }
