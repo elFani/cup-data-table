@@ -10,6 +10,9 @@ import { RosterComponent } from './components/roster.component';
 import { CdkTableModule } from '@angular/cdk/table';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
+//Pipe
+import { ConvertFeePaidPipe } from './pipes/paid-fee.pipe'
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -22,7 +25,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
   ],
   declarations: [
     AppComponent,
-    RosterComponent
+    RosterComponent,
+    ConvertFeePaidPipe
   ],
   bootstrap: [AppComponent]
 })

@@ -27,7 +27,7 @@
   <ng-container cdkColumnDef="paid">
     <th cdk-header-cell *cdkHeaderCellDef cdkDrag cdkDragLockAxis="x" (click)="adjustSort('JerseyFeePaid')">paid fee</th>
     <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
-    <td cdk-cell *cdkCellDef="let row">{{ row.JerseyFeePaid }}</td>
+    <td cdk-cell *cdkCellDef="let row">{{ row.JerseyFeePaid | convertFeePaid }}</td>
   </ng-container>
   <ng-container cdkColumnDef="email">
     <th cdk-header-cell *cdkHeaderCellDef cdkDrag cdkDragLockAxis="x" (click)="adjustSort('EmailAddress')">email</th>
