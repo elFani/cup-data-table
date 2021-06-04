@@ -5,7 +5,6 @@ import { HttpClientModule } from '@angular/common/http';
 
 
 import { AppComponent } from './app.component';
-import { HelloComponent } from './hello.component';
 import { RosterComponent } from './components/roster.component';
 
 import { CdkTableModule } from '@angular/cdk/table';
@@ -21,7 +20,6 @@ import { CdkTableModule } from '@angular/cdk/table';
   ],
   declarations: [
     AppComponent,
-    HelloComponent,
     RosterComponent
   ],
   bootstrap: [AppComponent]
