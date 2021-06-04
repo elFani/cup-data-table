@@ -1,33 +1,44 @@
 
 <h2 class="my-4">2021 Roster <small class="text-muted">sample data</small></h2>
-<!-- {{ flatplayers[0].id }} -->
-<div class="mt-5">
-  <table cdk-table [dataSource]="flatPlayersDisplay$" class="table table-hover">
-    <ng-container cdkColumnDef="name">
-      <th cdk-header-cell *cdkHeaderCellDef (click)="adjustSort('Name')">name</th>
-      <td cdk-cell *cdkCellDef="let row">{{ row.Name }}</td>
-    </ng-container>
-    <ng-container cdkColumnDef="position">
-      <th cdk-header-cell *cdkHeaderCellDef (click)="adjustSort('Position')">position</th>
-      <td cdk-cell *cdkCellDef="let row">{{ row.Position }}</td>
-    </ng-container>
-    <ng-container cdkColumnDef="paid">
-      <th cdk-header-cell *cdkHeaderCellDef (click)="adjustSort('JerseyFeePaid')">paid fee</th>
-      <td cdk-cell *cdkCellDef="let row">{{ row.JerseyFeePaid }}</td>
-    </ng-container>
-    <ng-container cdkColumnDef="email">
-      <th cdk-header-cell *cdkHeaderCellDef (click)="adjustSort('EmailAddress')">email</th>
-      <td cdk-cell *cdkCellDef="let row">{{ row.EmailAddress }}</td>
-    </ng-container>
-    <ng-container cdkColumnDef="address">
-      <th cdk-header-cell *cdkHeaderCellDef (click)="adjustSort('HomeAddress')">address</th>
-      <td cdk-cell *cdkCellDef="let row">{{ row.HomeAddress }}</td>
-    </ng-container>
-    <ng-container cdkColumnDef="notes">
-      <th cdk-header-cell *cdkHeaderCellDef (click)="adjustSort('Notes')">notes</th>
-      <td cdk-cell *cdkCellDef="let row">{{ row.Notes }}</td>
-    </ng-container>
-    <tr cdk-header-row *cdkHeaderRowDef="rosterColumns$.value"></tr>
-    <tr cdk-row *cdkRowDef="let row; columns: rosterColumns$.value;"></tr>
-  </table>
+<div class="bg-primary d-flex mt-5 pl-3 align-items-center">
+  <div class="flex-grow text-white">TABLE</div>
+  <div class="ml-auto">
+      <div class="input-group">
+        <input type="text" class="form-control rounded-0 border-primary text-primary" placeholder="filter table..." [formControl]="searchControl">
+        <div class="input-group-append">
+          <button class="btn btn-primary rounded-0" (click)="searchControl.setValue('')">
+            CLEAR
+          </button>
+        </div>
+      </div>
+  </div>
 </div>
+<table cdk-table cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)" [dataSource]="flatPlayersDisplay$" class="table table-hover clickup">
+  <ng-container cdkColumnDef="name">
+    <th cdk-header-cell *cdkHeaderCellDef cdkDrag cdkDragLockAxis="x" (click)="adjustSort('Name')">name</th>
+    <!-- <div class="example-custom-placeholder" *cdkDragPlaceholder></div> -->
+    <td cdk-cell *cdkCellDef="let row">{{ row.Name }}</td>
+  </ng-container>
+  <ng-container cdkColumnDef="position">
+    <th cdk-header-cell *cdkHeaderCellDef cdkDrag cdkDragLockAxis="x" (click)="adjustSort('Position')">position</th>
+    <td cdk-cell *cdkCellDef="let row">{{ row.Position }}</td>
+  </ng-container>
+  <ng-container cdkColumnDef="paid">
+    <th cdk-header-cell *cdkHeaderCellDef cdkDrag cdkDragLockAxis="x" (click)="adjustSort('JerseyFeePaid')">paid fee</th>
+    <td cdk-cell *cdkCellDef="let row">{{ row.JerseyFeePaid }}</td>
+  </ng-container>
+  <ng-container cdkColumnDef="email">
+    <th cdk-header-cell *cdkHeaderCellDef cdkDrag cdkDragLockAxis="x" (click)="adjustSort('EmailAddress')">email</th>
+    <td cdk-cell *cdkCellDef="let row">{{ row.EmailAddress }}</td>
+  </ng-container>
+  <ng-container cdkColumnDef="address">
+    <th cdk-header-cell *cdkHeaderCellDef cdkDrag cdkDragLockAxis="x" (click)="adjustSort('HomeAddress')">address</th>
+    <td cdk-cell *cdkCellDef="let row">{{ row.HomeAddress }}</td>
+  </ng-container>
+  <ng-container cdkColumnDef="notes">
+    <th cdk-header-cell *cdkHeaderCellDef cdkDrag cdkDragLockAxis="x" (click)="adjustSort('Notes')">notes</th>
+    <td cdk-cell *cdkCellDef="let row">{{ row.Notes }}</td>
+  </ng-container>
+  <tr cdk-header-row *cdkHeaderRowDef="rosterColumns$.value"></tr>
+  <tr cdk-row *cdkRowDef="let row; columns: rosterColumns$.value;"></tr>
+</table>

@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { RosterComponent } from './components/roster.component';
 
 import { CdkTableModule } from '@angular/cdk/table';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { CdkTableModule } from '@angular/cdk/table';
     HttpClientModule,
     CdkTableModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DragDropModule
   ],
   declarations: [
     AppComponent,

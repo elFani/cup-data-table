@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { BehaviorSubject,combineLatest } from 'rxjs';
+import { FormControl } from '@angular/forms';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 //Models
 import { FlatPlayer, Player, Roster } from '../models/player.model';
@@ -36,6 +38,7 @@ export class RosterComponent {
   ]);
   sortKey$ = new BehaviorSubject<string>('Name');
   sortDirection$ = new BehaviorSubject<string>('asc');
+  searchControl = new FormControl();
 
 
   constructor(private playerService: PlayersService) {}
@@ -52,26 +55,26 @@ export class RosterComponent {
 
     });
 
-    combineLatest([this.flatPlayers$, this.sortKey$, this.sortDirection$])
-      .subscribe(([players, sortKey, sortDirection]) => {
+    combineLatest([this.flatPlayers$, this.sortKey$, this.sortDirection$, this.searchControl.valueChanges])
+      .subscribe(([players, sortKey, sortDirection, searchInput]) => {
         console.log('inside combine', sortKey, sortDirection, players);
 
         const rosterArray = Object.values(players);
-        // let filteredRoster: any[] = rosterArray;
+        let filteredRoster: FlatPlayer[] = [];
 
-        // if (!searchTerm) {
-        //   filteredHeroes = heroesArray;
-        // } else {
-        //   const filteredResults = heroesArray.filter(hero => {
-        //     return Object.values(hero)
-        //       .reduce((prev, curr) => {
-        //         return prev || curr.toString().toLowerCase().includes(searchTerm.toLowerCase());
-        //       }, false);
-        //   });
-        //   filteredHeroes = filteredResults;
-        // }
+        if (!searchInput) {
+          filteredRoster = rosterArray;
+        } else {
+          const filteredResults = rosterArray.filter(hero => {
+            return Object.values(hero)
+              .reduce((prev, curr) => {
+                return prev || curr.toString().toLowerCase().includes(searchInput.toLowerCase());
+              }, false);
+          });
+          filteredRoster = filteredResults;
+        }
 
-        const nextSort = rosterArray.sort((a, b) => {
+        const nextSort = filteredRoster.sort((a, b) => {
           console.log('inside .sort',a, b, a[sortKey], b[sortKey]);
           if (a[sortKey] > b[sortKey]) return sortDirection === 'asc' ? 1 : -1;
           if (a[sortKey] < b[sortKey]) return sortDirection === 'asc' ? -1 : 1;
@@ -84,10 +87,11 @@ export class RosterComponent {
         this.flatPlayersDisplay$.next(nextSort);
       });
 
-    // this.searchFormControl.setValue('');
+    this.searchControl.setValue('');
   }
+
   adjustSort(key: string) {
-    console.log('inside adjustsort', this.sortKey$.value, this.sortDirection$.value);
+    console.log('inside adjustsort', this.sortKey$.value, this.sortDirection$.value,key);
 
     if (this.sortKey$.value === key) {
       if (this.sortDirection$.value === 'asc') {
@@ -101,30 +105,16 @@ export class RosterComponent {
     this.sortKey$.next(key);
     this.sortDirection$.next('asc');
   }
+
+  drop(event: CdkDragDrop<string[]>) {
+    console.log('inside drop');
+    //make a static array with the current columns
+    const newColumns: string[] = this.rosterColumns$.value
+
+   // rearrange the columns according to the move/event
+    moveItemInArray(newColumns, event.previousIndex, event.currentIndex)
+
+    // push new order into columns definition observable
+    this.rosterColumns$.next([...newColumns]);
+  }
 }
-
-
-
-  // onSort({ column, direction }: SortEvent) {
-  //   console.log('inside onSort');
-
-  //   // resetting other headers
-  //   this.headers.forEach(header => {
-  //     if (header.sortable !== column) {
-  //       header.direction = '';
-  //     }
-  //   });
-
-  //   // sorting countries
-  //   if (direction === '' || column === '') {
-  //     this.displayRoster = this.sourceRoster;
-  //   } else {
-  //     this.displayRoster = [...this.sourceRoster].sort((a, b) => {
-  //       const colValA = column.split('.').reduce((o, i) => o[i], a); // takes the column in dot notation and retrieves value for the obj passed in as the last argument in the reduce function
-  //       const colValB = column.split('.').reduce((o, i) => o[i], b);
-  //       const res = compare(`${colValA}`, `${colValB}`);
-  //       return direction === 'asc' ? res : -res;
-  //     });
-  //   }
-  // }
-
