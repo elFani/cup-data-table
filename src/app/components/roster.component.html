@@ -16,27 +16,32 @@
 <table cdk-table cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)" [dataSource]="flatPlayersDisplay$" class="table table-hover clickup">
   <ng-container cdkColumnDef="name">
     <th cdk-header-cell *cdkHeaderCellDef cdkDrag cdkDragLockAxis="x" (click)="adjustSort('Name')">name</th>
-    <!-- <div class="example-custom-placeholder" *cdkDragPlaceholder></div> -->
+    <div class="drag-placeholder" *cdkDragPlaceholder></div>
     <td cdk-cell *cdkCellDef="let row">{{ row.Name }}</td>
   </ng-container>
   <ng-container cdkColumnDef="position">
     <th cdk-header-cell *cdkHeaderCellDef cdkDrag cdkDragLockAxis="x" (click)="adjustSort('Position')">position</th>
+    <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
     <td cdk-cell *cdkCellDef="let row">{{ row.Position }}</td>
   </ng-container>
   <ng-container cdkColumnDef="paid">
     <th cdk-header-cell *cdkHeaderCellDef cdkDrag cdkDragLockAxis="x" (click)="adjustSort('JerseyFeePaid')">paid fee</th>
+    <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
     <td cdk-cell *cdkCellDef="let row">{{ row.JerseyFeePaid }}</td>
   </ng-container>
   <ng-container cdkColumnDef="email">
     <th cdk-header-cell *cdkHeaderCellDef cdkDrag cdkDragLockAxis="x" (click)="adjustSort('EmailAddress')">email</th>
+    <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
     <td cdk-cell *cdkCellDef="let row">{{ row.EmailAddress }}</td>
   </ng-container>
   <ng-container cdkColumnDef="address">
     <th cdk-header-cell *cdkHeaderCellDef cdkDrag cdkDragLockAxis="x" (click)="adjustSort('HomeAddress')">address</th>
+    <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
     <td cdk-cell *cdkCellDef="let row">{{ row.HomeAddress }}</td>
   </ng-container>
   <ng-container cdkColumnDef="notes">
     <th cdk-header-cell *cdkHeaderCellDef cdkDrag cdkDragLockAxis="x" (click)="adjustSort('Notes')">notes</th>
+    <div class="drag-placeholder" *cdkDragPlaceholder></div>
     <td cdk-cell *cdkCellDef="let row">{{ row.Notes }}</td>
   </ng-container>
   <tr cdk-header-row *cdkHeaderRowDef="rosterColumns$.value"></tr>
