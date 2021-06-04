@@ -1,33 +1,33 @@
-<h2>roster comp</h2>
 
-<div>
-  <table cdk-table [dataSource]="displayRoster" class="table table-hover">
+<h2 class="my-4">2021 Roster <small class="text-muted">sample data</small></h2>
+<!-- {{ flatplayers[0].id }} -->
+<div class="mt-5">
+  <table cdk-table [dataSource]="flatPlayersDisplay$" class="table table-hover">
     <ng-container cdkColumnDef="name">
-      <th cdk-header-cell *cdkHeaderCellDef sortable="fields.Name" (sort)="onSort($event)">
-        name</th>
-      <td cdk-cell *cdkCellDef="let row">{{ row.fields.Name }}</td>
+      <th cdk-header-cell *cdkHeaderCellDef (click)="adjustSort('Name')">name</th>
+      <td cdk-cell *cdkCellDef="let row">{{ row.Name }}</td>
     </ng-container>
     <ng-container cdkColumnDef="position">
-      <th cdk-header-cell *cdkHeaderCellDef>position</th>
-      <td cdk-cell *cdkCellDef="let row">{{ row.fields.Position }}</td>
+      <th cdk-header-cell *cdkHeaderCellDef (click)="adjustSort('Position')">position</th>
+      <td cdk-cell *cdkCellDef="let row">{{ row.Position }}</td>
     </ng-container>
     <ng-container cdkColumnDef="paid">
-      <th cdk-header-cell *cdkHeaderCellDef>paid jersey fee</th>
-      <td cdk-cell *cdkCellDef="let row">{{ row.fields.JerseyFeePaid }}</td>
+      <th cdk-header-cell *cdkHeaderCellDef (click)="adjustSort('JerseyFeePaid')">paid fee</th>
+      <td cdk-cell *cdkCellDef="let row">{{ row.JerseyFeePaid }}</td>
     </ng-container>
     <ng-container cdkColumnDef="email">
-      <th cdk-header-cell *cdkHeaderCellDef>email</th>
-      <td cdk-cell *cdkCellDef="let row">{{ row.fields.EmailAddress }}</td>
+      <th cdk-header-cell *cdkHeaderCellDef (click)="adjustSort('EmailAddress')">email</th>
+      <td cdk-cell *cdkCellDef="let row">{{ row.EmailAddress }}</td>
     </ng-container>
     <ng-container cdkColumnDef="address">
-      <th cdk-header-cell *cdkHeaderCellDef>address</th>
-      <td cdk-cell *cdkCellDef="let row">{{ row.fields.HomeAddress }}</td>
+      <th cdk-header-cell *cdkHeaderCellDef (click)="adjustSort('HomeAddress')">address</th>
+      <td cdk-cell *cdkCellDef="let row">{{ row.HomeAddress }}</td>
     </ng-container>
     <ng-container cdkColumnDef="notes">
-      <th cdk-header-cell *cdkHeaderCellDef>notes</th>
-      <td cdk-cell *cdkCellDef="let row">{{ row.fields.Notes }}</td>
+      <th cdk-header-cell *cdkHeaderCellDef (click)="adjustSort('Notes')">notes</th>
+      <td cdk-cell *cdkCellDef="let row">{{ row.Notes }}</td>
     </ng-container>
-    <tr cdk-header-row *cdkHeaderRowDef="rosterColumns"></tr>
-    <tr cdk-row *cdkRowDef="let row; columns: rosterColumns;"></tr>
+    <tr cdk-header-row *cdkHeaderRowDef="rosterColumns$.value"></tr>
+    <tr cdk-row *cdkRowDef="let row; columns: rosterColumns$.value;"></tr>
   </table>
 </div>

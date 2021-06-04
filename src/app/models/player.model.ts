@@ -10,9 +10,20 @@ export interface Player {
 
 export interface PlayerData {
   streetAddress?: string;
-  Name?: string;
+  name?: string;
   notes?: string;
   position?: string;
   emailAddress?: string;
   jerseyFeePaid?: boolean;
+}
+
+export interface FlatPlayer {
+  id?: string;
+  createdTime?: Date;
+  HomeAddress?: string;
+  Name?: string;
+  Notes?: string;
+  Position?: string;
+  EmailAddress?: string;
+  JerseyFeePaid?: boolean;
 }

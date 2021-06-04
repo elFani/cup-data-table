@@ -1,68 +1,130 @@
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component } from '@angular/core';
+import { BehaviorSubject,combineLatest } from 'rxjs';
 
 //Models
-import { PlayerData, Player, Roster } from '../models/player.model';
+import { FlatPlayer, Player, Roster } from '../models/player.model';
 
 //Services
 import { PlayersService } from '../services/players.service';
 
-//Directive
-import {
-  SortableHeader,
-  SortEvent
-} from '../directives/table-sorting.directive';
-
-// compare func for sorting
-export const compare = (v1: string, v2: string) =>
-  v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
+const flattenObject = (obj, prefix = '') =>
+  Object.keys(obj).reduce((acc, k) => {
+    // const pre = prefix.length ? prefix + '.' : '';
+    if (typeof obj[k] === 'object') Object.assign(acc, flattenObject(obj[k], k));
+    else acc[k] = obj[k];
+    return acc;
+  }, {});
 
 @Component({
   selector: 'roster',
   templateUrl: './roster.component.html',
   styleUrls: ['./roster.component.scss']
 })
+
 export class RosterComponent {
-  players: Player[];
-  displayRoster: Player[];
-  sourceRoster: Player[];
-  rosterColumns: string[] = [
+  players$ = new BehaviorSubject<Player[]>([]);
+  flatPlayers$ = new BehaviorSubject<FlatPlayer[]>([]);
+  flatPlayersDisplay$ = new BehaviorSubject<FlatPlayer[]>([]);
+  displayRoster$ = new BehaviorSubject<Player[]>([]);
+  rosterColumns$ = new BehaviorSubject<string[]>([
     'name',
     'position',
     'paid',
     'email',
     'address',
     'notes'
-  ];
-  @ViewChildren(SortableHeader) headers: QueryList<SortableHeader>;
+  ]);
+  sortKey$ = new BehaviorSubject<string>('Name');
+  sortDirection$ = new BehaviorSubject<string>('asc');
+
 
   constructor(private playerService: PlayersService) {}
 
   ngOnInit() {
-    this.playerService.getCurrentRoster().subscribe((result: Roster) => {
-      this.players = result.records;
-      this.sourceRoster = this.players;
-      this.displayRoster = this.sourceRoster;
-    });
-  }
+    this.playerService.getCurrentRoster().subscribe((roster: Roster) => {
+      this.displayRoster$.next(Object.values(roster.records))
+      console.log(this.displayRoster$.value);
+      this.players$.next(Object.values(roster.records))
+      const flat = Object.values(roster.records);
+      this.flatPlayers$.next(flat.map(el => flattenObject(el)))
+      this.flatPlayersDisplay$.next(this.flatPlayers$.value)
+      console.log('flatplayers',this.flatPlayersDisplay$.value);
 
-  onSort({ column, direction }: SortEvent) {
-    // resetting other headers
-    this.headers.forEach(header => {
-      if (header.sortable !== column) {
-        header.direction = '';
-      }
     });
 
-    // sorting countries
-    if (direction === '' || column === '') {
-      this.displayRoster = this.sourceRoster;
-    } else {
-      this.displayRoster = [...this.sourceRoster].sort((a, b) => {
-        const colValA = column.split('.').reduce((o, i) => o[i], a); // takes the column in dot notation and retrieves value for the obj passed in as the last argument in the reduce function
-        const colValB = column.split('.').reduce((o, i) => o[i], b);
-        const res = compare(`${colValA}`, `${colValB}`);
-        return direction === 'asc' ? res : -res;
+    combineLatest([this.flatPlayers$, this.sortKey$, this.sortDirection$])
+      .subscribe(([players, sortKey, sortDirection]) => {
+        console.log('inside combine', sortKey, sortDirection, players);
+
+        const rosterArray = Object.values(players);
+        // let filteredRoster: any[] = rosterArray;
+
+        // if (!searchTerm) {
+        //   filteredHeroes = heroesArray;
+        // } else {
+        //   const filteredResults = heroesArray.filter(hero => {
+        //     return Object.values(hero)
+        //       .reduce((prev, curr) => {
+        //         return prev || curr.toString().toLowerCase().includes(searchTerm.toLowerCase());
+        //       }, false);
+        //   });
+        //   filteredHeroes = filteredResults;
+        // }
+
+        const nextSort = rosterArray.sort((a, b) => {
+          console.log('inside .sort',a, b, a[sortKey], b[sortKey]);
+          if (a[sortKey] > b[sortKey]) return sortDirection === 'asc' ? 1 : -1;
+          if (a[sortKey] < b[sortKey]) return sortDirection === 'asc' ? -1 : 1;
+          return 0;
+        });
+
+        console.log('nextsort',nextSort);
+
+
+        this.flatPlayersDisplay$.next(nextSort);
       });
+
+    // this.searchFormControl.setValue('');
+  }
+  adjustSort(key: string) {
+    console.log('inside adjustsort', this.sortKey$.value, this.sortDirection$.value);
+
+    if (this.sortKey$.value === key) {
+      if (this.sortDirection$.value === 'asc') {
+        this.sortDirection$.next('desc');
+      } else {
+        this.sortDirection$.next('asc');
+      }
+      return;
     }
+
+    this.sortKey$.next(key);
+    this.sortDirection$.next('asc');
   }
 }
+
+
+
+  // onSort({ column, direction }: SortEvent) {
+  //   console.log('inside onSort');
+
+  //   // resetting other headers
+  //   this.headers.forEach(header => {
+  //     if (header.sortable !== column) {
+  //       header.direction = '';
+  //     }
+  //   });
+
+  //   // sorting countries
+  //   if (direction === '' || column === '') {
+  //     this.displayRoster = this.sourceRoster;
+  //   } else {
+  //     this.displayRoster = [...this.sourceRoster].sort((a, b) => {
+  //       const colValA = column.split('.').reduce((o, i) => o[i], a); // takes the column in dot notation and retrieves value for the obj passed in as the last argument in the reduce function
+  //       const colValB = column.split('.').reduce((o, i) => o[i], b);
+  //       const res = compare(`${colValA}`, `${colValB}`);
+  //       return direction === 'asc' ? res : -res;
+  //     });
+  //   }
+  // }
+
