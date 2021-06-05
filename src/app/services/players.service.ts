@@ -9,7 +9,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../environment/environment';
 
 // Models
-import { Roster, Player } from '../models/player.model';
+import { Roster } from '../models/player.model';
 
 //Services
 

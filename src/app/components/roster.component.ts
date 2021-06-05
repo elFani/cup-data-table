@@ -1,21 +1,14 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { BehaviorSubject,combineLatest, Subscription } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 //Models
-import { FlatPlayer, Player, Roster } from '../models/player.model';
+import { FlatPlayer, Roster } from '../models/player.model';
 
 //Services
 import { PlayersService } from '../services/players.service';
-
-const flattenObject = (obj, prefix = '') =>
-  Object.keys(obj).reduce((acc, k) => {
-    // const pre = prefix.length ? prefix + '.' : '';
-    if (typeof obj[k] === 'object') Object.assign(acc, flattenObject(obj[k], k));
-    else acc[k] = obj[k];
-    return acc;
-  }, {});
+import { FlattenObjectService } from '../services/flatten-object.service';
 
 @Component({
   selector: 'roster',
@@ -40,13 +33,20 @@ export class RosterComponent {
   sortDirection$ = new BehaviorSubject<string>('asc');
   searchControl = new FormControl();
 
-
-  constructor(private playerService: PlayersService) {}
+  constructor(
+    private playerService: PlayersService,
+    private flattenObjectService: FlattenObjectService
+    ) {}
 
   ngOnInit() {
     this.playerSub = this.playerService.getCurrentRoster().subscribe((roster: Roster) => {
-      const flat = Object.values(roster.records);
-      this.flatPlayers$.next(flat.map(el => flattenObject(el)))
+      //get initial array values
+      const toFlatten = Object.values(roster.records);
+
+      //flatten nested objects inside array, hence flatPlayer name and Type
+      this.flatPlayers$.next( this.flattenObjectService.flattenAndPreserveArray(toFlatten) )
+
+      //push values into display observable
       this.flatPlayersDisplay$.next(this.flatPlayers$.value)
       console.log('flatplayers',this.flatPlayersDisplay$.value);
 
