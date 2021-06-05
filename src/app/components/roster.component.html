@@ -1,49 +1,63 @@
-
-<h2 class="my-4">2021 Roster <small class="text-muted">sample data</small></h2>
-<div class="bg-primary d-flex mt-5 pl-3 align-items-center">
-  <div class="flex-grow text-white">TABLE</div>
-  <div class="ml-auto">
+<section class="px-5">
+  <div class="bg-primary d-flex pl-3 align-items-center">
+    <div class="flex-grow text-white font-weight-bold">2021-22 ROSTER OF MEMBERS</div>
+    <div class="ml-auto">
       <div class="input-group">
-        <input type="text" class="form-control rounded-0 border-primary text-primary" placeholder="filter table..." [formControl]="searchControl">
+        <input type="text" class="form-control rounded-0 border-primary text-primary" placeholder="filter table..."
+          [formControl]="searchControl">
         <div class="input-group-append">
           <button class="btn btn-primary rounded-0" (click)="searchControl.setValue('')">
             CLEAR
           </button>
         </div>
       </div>
+    </div>
   </div>
-</div>
-<table cdk-table cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)" [dataSource]="flatPlayersDisplay$" class="table table-hover clickup">
-  <ng-container cdkColumnDef="name">
-    <th cdk-header-cell *cdkHeaderCellDef cdkDrag cdkDragLockAxis="x" (click)="adjustSort('Name')">name</th>
-    <div class="drag-placeholder" *cdkDragPlaceholder></div>
-    <td cdk-cell *cdkCellDef="let row">{{ row.Name }}</td>
-  </ng-container>
-  <ng-container cdkColumnDef="position">
-    <th cdk-header-cell *cdkHeaderCellDef cdkDrag cdkDragLockAxis="x" (click)="adjustSort('Position')">position</th>
-    <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
-    <td cdk-cell *cdkCellDef="let row">{{ row.Position }}</td>
-  </ng-container>
-  <ng-container cdkColumnDef="paid">
-    <th cdk-header-cell *cdkHeaderCellDef cdkDrag cdkDragLockAxis="x" (click)="adjustSort('JerseyFeePaid')">paid fee</th>
-    <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
-    <td cdk-cell *cdkCellDef="let row">{{ row.JerseyFeePaid | convertFeePaid }}</td>
-  </ng-container>
-  <ng-container cdkColumnDef="email">
-    <th cdk-header-cell *cdkHeaderCellDef cdkDrag cdkDragLockAxis="x" (click)="adjustSort('EmailAddress')">email</th>
-    <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
-    <td cdk-cell *cdkCellDef="let row">{{ row.EmailAddress }}</td>
-  </ng-container>
-  <ng-container cdkColumnDef="address">
-    <th cdk-header-cell *cdkHeaderCellDef cdkDrag cdkDragLockAxis="x" (click)="adjustSort('HomeAddress')">address</th>
-    <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
-    <td cdk-cell *cdkCellDef="let row">{{ row.HomeAddress }}</td>
-  </ng-container>
-  <ng-container cdkColumnDef="notes">
-    <th cdk-header-cell *cdkHeaderCellDef cdkDrag cdkDragLockAxis="x" (click)="adjustSort('Notes')">notes</th>
-    <div class="drag-placeholder" *cdkDragPlaceholder></div>
-    <td cdk-cell *cdkCellDef="let row">{{ row.Notes }}</td>
-  </ng-container>
-  <tr cdk-header-row *cdkHeaderRowDef="rosterColumns$.value"></tr>
-  <tr cdk-row *cdkRowDef="let row; columns: rosterColumns$.value;"></tr>
-</table>
+  <table cdk-table cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)"
+    [dataSource]="flatPlayersDisplay$" class="table table-hover table-bordered clickup">
+    <ng-container cdkColumnDef="id">
+      <th cdk-header-cell *cdkHeaderCellDef cdkDrag cdkDragLockAxis="x" (click)="sortColumn('id')"
+        [ngClass]="{'asc':sortKey$.value === 'id' && sortDirection$.value === 'asc', 'desc':sortKey$.value === 'id' && sortDirection$.value === 'desc'}">
+        id</th>
+      <div class="drag-placeholder" *cdkDragPlaceholder></div>
+      <td cdk-cell *cdkCellDef="let row">{{ row.id | convertID }}</td> <!--remove common first 3 chars and toUpperCase  -->
+    </ng-container>
+    <ng-container cdkColumnDef="name">
+      <th cdk-header-cell *cdkHeaderCellDef cdkDrag cdkDragLockAxis="x" (click)="sortColumn('Name')"
+        [ngClass]="{'asc':sortKey$.value === 'Name' && sortDirection$.value === 'asc', 'desc':sortKey$.value === 'Name' && sortDirection$.value === 'desc'}">
+        name</th>
+      <div class="drag-placeholder" *cdkDragPlaceholder></div>
+      <td cdk-cell *cdkCellDef="let row">{{ row.Name }}</td>
+    </ng-container>
+    <ng-container cdkColumnDef="position">
+      <th cdk-header-cell *cdkHeaderCellDef cdkDrag cdkDragLockAxis="x" (click)="sortColumn('Position')"
+        [ngClass]="{'asc':sortKey$.value === 'Position' && sortDirection$.value === 'asc', 'desc':sortKey$.value === 'Position' && sortDirection$.value === 'desc'}">
+        position</th>
+      <div class="drag-placeholder" *cdkDragPlaceholder></div>
+      <td cdk-cell *cdkCellDef="let row">{{ row.Position }}</td>
+    </ng-container>
+    <ng-container cdkColumnDef="email">
+      <th cdk-header-cell *cdkHeaderCellDef cdkDrag cdkDragLockAxis="x" (click)="sortColumn('EmailAddress')"
+        [ngClass]="{'asc':sortKey$.value === 'EmailAddress' && sortDirection$.value === 'asc', 'desc':sortKey$.value === 'EmailAddress' && sortDirection$.value === 'desc'}">
+        email</th>
+      <div class="drag-placeholder" *cdkDragPlaceholder></div>
+      <td cdk-cell *cdkCellDef="let row">{{ row.EmailAddress }}</td>
+    </ng-container>
+    <ng-container cdkColumnDef="address">
+      <th cdk-header-cell *cdkHeaderCellDef cdkDrag cdkDragLockAxis="x" (click)="sortColumn('HomeAddress')"
+        [ngClass]="{'asc':sortKey$.value === 'HomeAddress' && sortDirection$.value === 'asc', 'desc':sortKey$.value === 'HomeAddress' && sortDirection$.value === 'desc'}">
+        address</th>
+      <div class="drag-placeholder" *cdkDragPlaceholder></div>
+      <td cdk-cell *cdkCellDef="let row">{{ row.HomeAddress }}</td>
+    </ng-container>
+    <ng-container cdkColumnDef="notes">
+      <th cdk-header-cell *cdkHeaderCellDef cdkDrag cdkDragLockAxis="x" (click)="sortColumn('Notes')"
+        [ngClass]="{'asc':sortKey$.value === 'Notes' && sortDirection$.value === 'asc', 'desc':sortKey$.value === 'Notes' && sortDirection$.value === 'desc'}">
+        notes</th>
+      <div class="drag-placeholder" *cdkDragPlaceholder></div>
+      <td cdk-cell *cdkCellDef="let row">{{ row.Notes }}</td>
+    </ng-container>
+    <tr cdk-header-row *cdkHeaderRowDef="rosterColumns$.value"></tr>
+    <tr cdk-row *cdkRowDef="let row; columns: rosterColumns$.value;"></tr>
+  </table>
+</section>

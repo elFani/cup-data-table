@@ -12,6 +12,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 
 //Pipe
 import { ConvertFeePaidPipe } from './pipes/paid-fee.pipe'
+import { ConvertIDPipe } from './pipes/convert-id.pipe'
 
 @NgModule({
   imports: [
@@ -26,7 +27,8 @@ import { ConvertFeePaidPipe } from './pipes/paid-fee.pipe'
   declarations: [
     AppComponent,
     RosterComponent,
-    ConvertFeePaidPipe
+    ConvertFeePaidPipe,
+    ConvertIDPipe
   ],
   bootstrap: [AppComponent]
 })

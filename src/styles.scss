@@ -1,43 +1,46 @@
+@import "./sass/vars.scss";
 @import "../node_modules/bootstrap/scss/bootstrap.scss";
 
 /* Add application styles & imports to this file! */
-$cyan:    #00C6D7;
-$blue:    #006a96;
-$navy:    #00465F;
-$orange:  #FC8900;
-$yellow:  #FFCD00;
 
-body {
-    padding: 1rem;
+.jumbotron .grid {
+	align-items: center;
+	justify-content: center;
+	text-align: center;
 }
 
 th {
 	cursor: pointer;
 }
 
+.cdk-header-row {
+	border-bottom: 3px solid #FFCD00;
+	background-color: #efefef;
+}
+
 th:hover {
 	background-color: rgba(0,0,0,0.075);
 }
 
-th[sortable]::after {
-	// font-family: FontAwesome;
-	// content: '\f0dc';
+.clickup th::after {
+	font-family: FontAwesome;
+	content: '\f0dc';
 	color:#006a96;
 	float: right;
 	margin-left: .8em;
 }
 
-th[sortable].asc::after {
-	// font-family: FontAwesome;
-	// content: '\f0de';
+.clickup th.asc::after {
+	font-family: FontAwesome;
+	content: '\f0de';
 	color:#006a96;
 	float: right;
 	margin-left: .8em;
 }
 
-th[sortable].desc::after {
-	// font-family: FontAwesome;
-	// content: '\f0dd';
+.clickup th.desc::after {
+	font-family: FontAwesome;
+	content: '\f0dd';
 	color:#006a96;
 	float: right;
 	margin-left: .8em;
@@ -64,7 +67,7 @@ th[sortable].desc::after {
 }
 
 .cdk-drag-placeholder {
-  opacity: 1;
+  opacity: .7;
 }
 
 .cdk-drag-animating {
